@@ -1,0 +1,42 @@
+// Neutrals (light base)
+$color-bg: #f6f6f6;
+$color-surface: #fff;
+$color-surface-soft: #fbfbfb;
+$color-border-subtle: #d6d6d6;
+
+
+// Neutrals (dark base)
+$color-bg-dark: #050506;
+$color-surface-dark: #0b0b0c;
+$color-surface-soft-dark: #0f0f10;
+$color-border-subtle-dark: #1f1f22;
+$color-logo-dark: #fff;
+$color-text-dark: #f3f4f6;
+
+
+// Shadows & radius
+$shadow-subtle: 0 8px 20px rgb(0 0 0 / 10%);
+
+// Typography
+$font-family-base: system-ui, -apple-system, "BlinkMacSystemFont", "SF Pro Text", "Segoe UI", sans-serif;
+$font-family-ui: "Poppins Regular", $font-family-base;
+$font-size-sm: 0.875rem;
+
+// ===========
+// THEME MAPS
+// ===========
+
+$theme-light: (
+  bg: $color-bg,
+  bg-surface: $color-surface,
+  bg-surface-soft: $color-surface-soft,
+  border-subtle: $color-border-subtle,
+);
+
+$theme-dark: (
+  bg: $color-bg-dark,
+  bg-surface: $color-surface-dark,
+  bg-surface-soft: $color-surface-soft-dark,
+  border-subtle: $color-border-subtle-dark,
+  logo: $color-logo-dark,
+);
