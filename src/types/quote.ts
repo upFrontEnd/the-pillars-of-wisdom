@@ -1,40 +1,87 @@
 /**
- * Types partagés pour les citations.
+ * src/types/quote.ts
  *
- * Pourquoi ce fichier ?
- * - Centralise la "forme" des données (JSON, props, composables).
- * - Évite de dupliquer des types dans chaque composant.
- * - Facilite les refactors (si on change le JSON, TS guide les corrections).
+ * Objectif :
+ * - Décrire “à quoi ressemble” une citation dans ton app.
+ *
+ * Pourquoi c’est utile ?
+ * - Ton JSON (quotes.json), tes composants (props) et ton composable (useQuotes)
+ *   manipulent tous les mêmes données.
+ * - En centralisant les types ici, tu évites :
+ *   - les duplications
+ *   - les incohérences
+ *   - les bugs où un composant “pense” qu’un champ existe alors qu’il n’existe pas
+ *
+ * En bref :
+ * - Ce fichier sert de “contrat” : si le contrat change, TypeScript te prévient partout.
  */
 
+/**
+ * QuoteAuthor = la partie “auteur” d’une citation.
+ *
+ * Tous les champs sont optionnels :
+ * - parce que certaines citations peuvent être anonymes
+ * - ou parce que tu n’as pas encore la donnée (photo/bio) dans ton JSON
+ */
 export type QuoteAuthor = {
 	/**
-	 * Nom affiché de l’auteur.
-	 * Optionnel : certaines citations peuvent être anonymes.
+	 * name :
+	 * - le nom affiché de l’auteur (ex: "Victor Hugo")
+	 * - optionnel : si absent, l’UI affichera un fallback ("Anonyme")
 	 */
 	name?: string;
 
 	/**
-	 * Bio courte affichable dans l’UI.
-	 * Optionnel : l’app doit fonctionner même si absent.
+	 * bio :
+	 * - petite description de l’auteur
+	 * - optionnel : si absent, on n’affiche rien (UI plus propre)
 	 */
 	bio?: string;
 
 	/**
-	 * Chemin public vers la photo.
-	 * Exemple : "/authors/good-mood.jpg"
-	 * Optionnel : on affichera un fallback si absent.
+	 * photo :
+	 * - chemin public vers une image
+	 * - exemple : "/authors/victor-hugo.jpg"
+	 *
+	 * Optionnel :
+	 * - si absent, le composant Photo affiche un placeholder
+	 *
+	 * Note importante :
+	 * - Le chemin commence par "/" => il pointe vers le dossier "public/"
+	 *   (ex: public/authors/victor-hugo.jpg)
 	 */
 	photo?: string;
 };
 
+/**
+ * QuoteItem = une citation complète.
+ *
+ * Champs obligatoires :
+ * - id : identifiant unique (utile pour les listes et la stabilité)
+ * - text : le texte de la citation
+ *
+ * Champ optionnel :
+ * - author : bloc auteur (si on a l’info)
+ */
 export type QuoteItem = {
-	/** Identifiant stable (utile pour les keys et l’évolution du dataset) */
+	/**
+	 * id :
+	 * - identifiant stable
+	 * - utile pour `:key` quand on rend des listes
+	 * - utile si tu fais évoluer le dataset plus tard
+	 */
 	id: string;
 
-	/** Texte de la citation */
+	/**
+	 * text :
+	 * - le contenu de la citation affichée
+	 */
 	text: string;
 
-	/** Infos auteur (optionnelles) */
+	/**
+	 * author :
+	 * - infos auteur (optionnelles)
+	 * - si absent, l’app doit rester utilisable
+	 */
 	author?: QuoteAuthor;
 };
