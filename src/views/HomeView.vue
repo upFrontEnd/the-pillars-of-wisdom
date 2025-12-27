@@ -9,15 +9,6 @@
 	 */
 
 	import { useQuotes } from "../composables/useQuotes";
-
-	/**
-	 * Composants = petites briques d’interface.
-	 *
-	 * Idée :
-	 * - Au lieu d’avoir une grosse page avec plein de HTML,
-	 *   on découpe en petites pièces réutilisables.
-	 * - Chaque composant fait une chose simple (photo, texte, auteur, etc.).
-	 */
 	import Photo from "../components/Photo.vue";
 	import Citation from "../components/Citation.vue";
 	import Author from "../components/Author.vue";
@@ -37,15 +28,8 @@
 
 	<template>
 		<main class="page">
-			<!-- Titre de la page -->
 			<header class="header">
-				<h1 class="h1">Les piliers de la sagesse</h1>
-
-				<!--
-					ThemeToggle :
-					- petit interrupteur qui change data-theme sur <html>
-					- ton SCSS écoute [data-theme="light/dark"] et change les variables CSS
-				-->
+				<h1 class="title">Les piliers<br>de la sagesse</h1>
 				<ThemeToggle />
 			</header>
 
@@ -62,30 +46,29 @@
 			-->
 			<section v-else class="card">
 				<header class="card__header">
-					<!--
-						Photo :
-						- si pas de photo dans le JSON, Photo affiche un fallback
-						- donc HomeView n’a pas besoin de gérer ce cas
-					-->
 					<Photo
 						:src="currentQuote.author?.photo"
 						:alt="currentQuote.author?.name ? `Photo de ${currentQuote.author.name}` : 'Photo auteur'"
 					/>
-
 					<!--
 						Infos auteur :
 						- Author affiche “Anonyme” si pas de nom
 						- Bio n’affiche rien si la bio est absente
 					-->
-					<div class="card__meta">
-						<Author :name="currentQuote.author?.name" />
-						<Bio :text="currentQuote.author?.bio" />
-					</div>
 				</header>
 
 				<!-- Texte de la citation -->
 				<Citation :text="currentQuote.text" />
 
+
+				<div class="card__meta">
+					<Author :name="currentQuote.author?.name" />
+					<Bio :text="currentQuote.author?.bio" />
+				</div>
+
+
+			</section>
+			<footer class="footer">
 				<!--
 					Bouton principal :
 					- clique => nextQuote()
@@ -103,11 +86,12 @@
 					- on lui passe uniquement les infos utiles
 				-->
 				<ShareButtons :text="currentQuote.text" :author="currentQuote.author?.name" />
-			</section>
+			</footer>
 		</main>
 	</template>
 
 	<style scoped lang="scss">
+		@use "../scss/abstracts" as *;
 	/**
 	 * Styles de HomeView (scoped = ça ne déborde pas ailleurs)
 	 *
@@ -116,34 +100,45 @@
 	 * - ensuite on améliore pour les écrans plus larges
 	 */
 
+	 .header, .footer {
+			margin: 0 auto;
+		 	width: 90%;
+	 }
+
 	.header {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 12px;
-		margin-bottom: 14px;
+			align-items: center;
+			justify-content: space-between;
+		 padding: 1rem 0;
+		h1 {
+			color: #f4af57;
+			font-family: "Oswald", sans-serif;;
+			font-weight: 400;
+			font-size: 20px;
+			font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+			font-style: normal;
+			line-height: 1;
+			text-transform: uppercase;
+		}
 	}
 
 	.card {
-		border-radius: 14px;
-		padding: 14px;
+		background: #fff;
+		border: 1px solid #c7c7c7;
+		border-top: 7px solid #f4af57;
+		border-radius: 5px;
+		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 		display: grid;
-		gap: 14px;
+			gap: 14px;
+		margin: 0 auto; padding: 50px 14px 14px;
+		width: 90%;
 
 		&__header {
-			display: grid;
-			grid-template-columns: 56px 1fr;
-			gap: 12px;
-			align-items: start;
-		}
-
-		&__meta {
-			display: grid;
-			gap: 6px;
-		}
-
-		&__actions {
 			display: flex;
+			align-items: center;
+			text-align: center;
+			position: absolute; top: 40px; left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 
@@ -161,9 +156,4 @@
 		cursor: pointer;
 	}
 
-	@media (min-width: 640px) {
-		.card {
-			padding: 18px;
-		}
-	}
 	</style>

@@ -17,12 +17,13 @@
 
 	<style scoped lang="scss">
 	.photo {
-		width: 56px;
-		height: 56px;
-		border-radius: 999px;
-		border: 1px solid var(--border);
-		object-fit: cover;
-
+		aspect-ratio: 1;
+		background: #fff;
+  	border-radius: 50%;
+  	border: 1px solid #c7c7c7;
+  	object-fit: cover;
+		padding: .2rem;
+		width: 80px;
 		&--fallback {
 			background: rgba(255, 255, 255, 0.06);
 		}
