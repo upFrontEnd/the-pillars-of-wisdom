@@ -58,7 +58,9 @@ const { currentQuote, nextQuote } = useQuotes();
 			</header>
 
 			<!-- Texte de la citation -->
-			<Citation :text="currentQuote.text" />
+			<div class="card__quote">
+				<Citation :text="currentQuote.text" />
+			</div>
 
 			<div class="card__meta">
 				<Author :name="currentQuote.author?.name" />
@@ -96,6 +98,11 @@ const { currentQuote, nextQuote } = useQuotes();
 	 * - on définit d’abord le style pour mobile
 	 * - ensuite on améliore pour les écrans plus larges
 	 */
+.page {
+	min-height: 100svh;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+}
 
 .header,
 .footer {
@@ -107,7 +114,7 @@ const { currentQuote, nextQuote } = useQuotes();
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 1rem 0;
+	padding: 1rem 0 0;
 	h1 {
 		color: #f4af57;
 		font-family: "Oswald", sans-serif;
@@ -120,39 +127,47 @@ const { currentQuote, nextQuote } = useQuotes();
 }
 
 .card {
+	align-self: center;
 	background: #fff;
-	border: 1px solid #c7c7c7;
 	border-top: 7px solid #f4af57;
 	border-radius: 5px;
 	box-shadow:
 		rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
 		rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 	display: grid;
-	gap: 14px;
+	grid-template-rows: auto minmax(220px, 220px) auto auto;
+	gap: 10px;
 	margin: 0 auto;
-	padding: 50px 14px;
+	padding: 0 20px;
+	position: relative;
+	height: clamp(440px, 62svh, 540px);
 	width: 90%;
 
 	&__header {
+		background-color: dodgerblue;
 		display: flex;
 		align-items: center;
-		text-align: center;
-		position: absolute;
-		top: 40px;
-		left: 50%;
-		transform: translateX(-50%);
+	}
+
+	&__quote {
+		background-color: greenyellow;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		min-height: 0;
 	}
 
 	&__meta {
+		background-color: gold;
 		text-align: center;
 	}
 }
 
-/**
-	 * Bouton “simple” :
-	 * - pour l’instant on met un style local
-	 * - plus tard, on pourra créer un composant Button si on en a plusieurs
-	 */
+.footer {
+	background-color: aquamarine;
+	padding: 1rem 0;
+}
+
 .btn {
 	border: 1px solid #ff0000;
 	background: rgba(255, 255, 255, 0.06);

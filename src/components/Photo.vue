@@ -51,9 +51,11 @@
 		background: #fff;
 		border-radius: 50%;
 		border: 1px solid #c7c7c7;
+		margin: 0 auto;
 		object-fit: cover;
-		padding: 0.2rem;
-		width: 80px;
+		position: absolute; left: 50%;
+		transform: translateX(-50%); top: -3rem;
+		width: 6rem;
 
 		/**
 		 * Fallback visuel (si aucune image) :

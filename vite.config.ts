@@ -19,6 +19,8 @@ export default defineConfig({
     },
   },
   server: {
-    open: true,
-  },
+		host: true, // équivalent à --host 0.0.0.0 => Vite affiche l'URL "Network"
+		port: 5173, // optionnel (mais pratique pour un port stable)
+		strictPort: true, // optionnel : évite que Vite change de port sans prévenir
+	},
 })

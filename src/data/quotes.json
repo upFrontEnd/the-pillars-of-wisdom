@@ -34,5 +34,14 @@
       "bio": "Mathématicien, Physicien, Scientifique (1879 - 1955)",
       "photo": "/authors/einstein.jpg"
     }
+  },
+	{
+    "id": "q-005",
+    "text": "Si tu parles, tu meurs. Si tu te tais, tu meurs. Alors, dis et meurs.",
+    "author": {
+      "name": "Tahar Djaout",
+      "bio": "Ecrivain et journaliste algérien (1954 - 1993)",
+      "photo": "/authors/djaout.jpg"
+    }
   }
 ]
