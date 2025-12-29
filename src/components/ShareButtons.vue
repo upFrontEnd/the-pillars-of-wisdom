@@ -4,23 +4,27 @@
 	/**
 	 * ShareButtons.vue
 	 *
-	 * Objectif :
-	 * - Permettre à l’utilisateur de partager la citation.
+	 * Ce composant sert à “partager la citation” de 2 manières :
 	 *
-	 * Deux modes possibles :
-	 * 1) Partage “natif” (Web Share API)
-	 *    - surtout sur mobile (iOS/Android)
-	 *    - ouvre le menu de partage du téléphone (messages, apps, etc.)
-	 * 2) Fallback (si pas de partage natif)
-	 *    - on affiche des liens de partage (X, LinkedIn)
+	 * 1) Si le navigateur supporte la Web Share API (souvent sur mobile)
+	 *    => on affiche un bouton “Partager” qui ouvre le menu natif
+	 *       (WhatsApp, Mail, Messages, etc.).
 	 *
+	 * 2) Sinon (souvent sur desktop)
+	 *    => on affiche des liens de partage (X, LinkedIn).
+	 *
+	 * Idée importante :
+	 * - Le composant ne choisit pas la citation.
+	 * - Il reçoit le texte (et l’auteur) depuis le parent (HomeView).
 	 */
 
 	/**
-	 * Props = données reçues du parent.
-	 *
-	 * - text : le texte de la citation (obligatoire)
+	 * Props :
+	 * - text   : la citation (obligatoire)
 	 * - author : nom de l’auteur (optionnel)
+	 *
+	 * Le parent fait par exemple :
+	 * <ShareButtons :text="currentQuote.text" :author="currentQuote.author?.name" />
 	 */
 	const props = defineProps<{
 		text: string;
@@ -28,45 +32,52 @@
 	}>();
 
 	/**
-	 * shareText = le texte final qu’on veut partager.
-	 *
-	 * - Si on a un auteur, on construit : "citation — auteur"
-	 * - Sinon, on partage juste la citation
+	 * shareText :
+	 * - C’est le texte “final” qu’on veut partager.
+	 * - Si author existe, on ajoute “— author” à la fin.
 	 *
 	 * computed :
-	 * - se recalcule automatiquement si text/author changent
+	 * - Vue recalcule automatiquement si props.text / props.author changent.
 	 */
-	const shareText = computed(() => (props.author ? `${props.text} — ${props.author}` : props.text));
+	const shareText = computed(() =>
+		props.author ? `${props.text} — ${props.author}` : props.text,
+	);
 
 	/**
-	 * pageUrl = l’URL de la page actuelle.
+	 * pageUrl :
+	 * - URL de la page actuelle.
+	 * - On l’ajoute au partage pour que la citation pointe vers ton site.
 	 *
-	 * - C’est utile pour que le partage pointe vers ton site.
-	 * - Ici, comme on est dans une app Vite côté navigateur, window.location est disponible.
+	 * Note :
+	 * - window.location.href est accessible côté navigateur.
+	 * - Dans ton app Vite (client-only), c’est OK.
 	 */
 	const pageUrl = computed(() => window.location.href);
 
 	/**
-	 * canNativeShare = est-ce que le navigateur supporte "navigator.share" ?
+	 * canNativeShare :
+	 * - true si le navigateur a la fonction `navigator.share`
+	 * - false sinon
 	 *
 	 * Pourquoi ce check ?
-	 * - Certains navigateurs n’ont pas l’API.
-	 * - Et on veut éviter tout crash si navigator est indisponible.
+	 * - On veut éviter toute erreur si l’API n’existe pas.
+	 * - Certains navigateurs (desktop) ne la supportent pas.
 	 *
-	 * Résultat :
-	 * - true  => on affiche un bouton "Partager" (menu natif)
-	 * - false => on affiche les liens X / LinkedIn
+	 * On ne fait pas de `('share' in navigator)` :
+	 * - l’opérateur `in` peut jeter une erreur si la valeur testée est undefined.
+	 * - ici on utilise un test simple et sûr : typeof navigator.share === "function"
 	 */
-	const canNativeShare = computed(() => typeof navigator !== "undefined" && typeof navigator.share === "function");
+	const canNativeShare = computed(() => {
+		return typeof navigator !== "undefined" && typeof navigator.share === "function";
+	});
 
 	/**
-	 * xUrl = lien de partage pour X (ancien Twitter).
+	 * xUrl :
+	 * - URL de partage pour X (tweet intent).
 	 *
-	 * On construit une URL du type :
-	 * - https://twitter.com/intent/tweet?text=...&url=...
-	 *
-	 * URL + searchParams :
-	 * - permet d’encoder correctement les caractères (accents, guillemets, etc.)
+	 * Pourquoi utiliser URL + searchParams ?
+	 * - Ça encode correctement les caractères spéciaux (accents, guillemets, etc.).
+	 * - Ça évite les erreurs de concaténation à la main.
 	 */
 	const xUrl = computed(() => {
 		const u = new URL("https://twitter.com/intent/tweet");
@@ -76,10 +87,8 @@
 	});
 
 	/**
-	 * linkedInUrl = lien de partage LinkedIn.
-	 *
-	 * Format LinkedIn :
-	 * - https://www.linkedin.com/sharing/share-offsite/?url=...
+	 * linkedInUrl :
+	 * - URL de partage LinkedIn (share-offsite).
 	 */
 	const linkedInUrl = computed(() => {
 		const u = new URL("https://www.linkedin.com/sharing/share-offsite/");
@@ -88,10 +97,13 @@
 	});
 
 	/**
-	 * nativeShare() = action appelée au clic sur "Partager".
+	 * nativeShare :
+	 * - Action appelée au clic sur le bouton “Partager”.
 	 *
-	 * - On re-check canNativeShare pour être sûr (sécurité).
-	 * - navigator.share ouvre le “menu de partage” du navigateur/appareil.
+	 * Important :
+	 * - `navigator.share()` doit être déclenché par un geste utilisateur (clic/tap),
+	 *   sinon le navigateur peut le bloquer.
+	 * - On re-vérifie canNativeShare (sécurité).
 	 */
 	async function nativeShare() {
 		if (!canNativeShare.value) return;
@@ -105,21 +117,25 @@
 	</script>
 
 	<template>
-		<!-- Conteneur global -->
+		<!--
+			Conteneur du module de partage.
+			Il gère l’espacement et l’alignement.
+		-->
 		<div class="share">
 			<!--
-				Mode 1 : partage natif
-				- affiché uniquement si le navigateur sait le faire
+				Mode “natif” :
+				- visible uniquement si le navigateur supporte navigator.share
+				- ouvre le menu de partage du device
 			-->
 			<button v-if="canNativeShare" class="btn" type="button" @click="nativeShare">
 				Partager
 			</button>
 
 			<!--
-				Mode 2 : fallback liens
-				- affiché si le partage natif n’existe pas
-				- target="_blank" => ouvre dans un nouvel onglet
-				- rel="noreferrer" => bonne pratique sécurité / confidentialité
+				Mode “fallback” :
+				- si pas de partage natif, on affiche des liens.
+				- target="_blank" : nouvel onglet
+				- rel="noreferrer" : bonne pratique de sécurité / confidentialité
 			-->
 			<div v-else class="share__links">
 				<a class="link" :href="xUrl" target="_blank" rel="noreferrer">Partager sur X</a>
@@ -129,8 +145,10 @@
 	</template>
 
 	<style scoped lang="scss">
+	@use "../scss/abstracts" as *;
 
 	.share {
+		font-family: $font-family-base;
 		display: grid;
 		gap: 10px;
 
@@ -142,18 +160,20 @@
 	}
 
 	.btn {
-		border: 1px solid #c7c7c7;
+		border: 1px solid #f4af57;
 		background: rgba(255, 255, 255, 0.06);
 		border-radius: 10px;
-		padding: 10px 12px;
+		color: #f4af57;
 		cursor: pointer;
+		padding: 10px 12px;
 	}
+
 	.link {
-		color: var(--muted);
+		color: $color-bg;
 		text-decoration: none;
 
 		&:hover {
-			color: var(--text);
+			color: #f4af57;
 		}
 	}
 	</style>

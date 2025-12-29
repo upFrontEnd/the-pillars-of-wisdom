@@ -15,6 +15,7 @@ import Author from "../components/Author.vue";
 import Bio from "../components/Bio.vue";
 import ShareButtons from "../components/ShareButtons.vue";
 import ThemeToggle from "../components/ThemeToggle.vue";
+import NativeShareButton from "../components/NativeShareButton.vue";
 
 /**
  * useQuotes() nous donne :
@@ -23,7 +24,7 @@ import ThemeToggle from "../components/ThemeToggle.vue";
  *
  * Comme currentQuote est réactif, l’écran se met à jour tout seul quand on clique.
  */
-const { currentQuote, nextQuote, prevQuote } = useQuotes();
+const { currentQuote, nextQuote } = useQuotes();
 </script>
 
 <template>
@@ -75,20 +76,27 @@ const { currentQuote, nextQuote, prevQuote } = useQuotes();
 				- Vue re-render automatiquement avec la nouvelle citation
 			-->
 			<div class="actions">
-				<button class="btn" type="button" @click="prevQuote">Citation préc.</button>
-				<button class="btn" type="button" @click="nextQuote">Citation suiv.</button>
+				<button class="btn" type="button" @click="nextQuote">Citation suivante</button>
 			</div>
-			</div>
-		<footer v-if="currentQuote" class="footer">
+		</div>
 
+
+		<footer v-if="currentQuote" class="footer">
 			<!--
 					Partage :
 					- si le navigateur supporte le partage natif => bouton “Partager”
 					- sinon => liens de partage
 					- on lui passe uniquement les infos utiles
 				-->
+			<NativeShareButton
+				:text="currentQuote.text"
+				:author="currentQuote.author?.name"
+				title="Good Mood Generator"
+			/>
+
 			<ShareButtons :text="currentQuote.text" :author="currentQuote.author?.name" />
 		</footer>
+
 	</main>
 </template>
 
@@ -135,13 +143,14 @@ const { currentQuote, nextQuote, prevQuote } = useQuotes();
 }
 
 .card {
-	align-self: center;
-	background: #fff;
+	background: #434343;
+	background: linear-gradient(327deg, rgba(67, 67, 67, 1) 20%, rgba(5, 0, 0, 1) 100%);
 	border: 7px solid #f4af57;
 	border-radius: 5px;
 	box-shadow:
 		rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
 		rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+	color: #fff;
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 	gap: 10px;
@@ -151,9 +160,6 @@ const { currentQuote, nextQuote, prevQuote } = useQuotes();
 	height: clamp(440px, 62svh, 540px);
 	width: 90%;
 
-	&__header {
-
-	}
 
 	&__quote {
 		display: grid;
@@ -190,5 +196,12 @@ const { currentQuote, nextQuote, prevQuote } = useQuotes();
 	cursor: pointer;
 	font-family: "Oswald", sans-serif;
 	padding: 10px 12px;
+	text-transform: uppercase;
+	letter-spacing: .1rem;
+	transition: all 0.3s ease;
+	&:hover {
+		background: #f4af57;
+		color: #000;
+	}
 }
 </style>

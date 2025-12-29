@@ -43,11 +43,6 @@ export function useQuotes() {
 		return quotes[currentIndex.value] ?? null;
 	});
 
-	/**
-	 * Indique si on peut revenir en arrière.
-	 * Utile pour désactiver le bouton "précédente" quand il n’y a aucun historique.
-	 */
-	const canPrev = computed(() => history.value.length > 0);
 
 	/**
 	 * Action : afficher une nouvelle citation (aléatoire).
@@ -63,25 +58,10 @@ export function useQuotes() {
 		currentIndex.value = pickNewIndex(currentIndex.value, quotes.length);
 	}
 
-	/**
-	 * Action : revenir à la citation précédente (celle réellement affichée juste avant).
-	 *
-	 * Important :
-	 * - on ne “calcule” pas (index - 1), on relit l’historique
-	 */
-	function prevQuote() {
-		const prev = history.value.pop();
-		if (prev === undefined) return;
-
-		currentIndex.value = prev;
-	}
-
 	return {
 		quotes,
 		currentIndex,
 		currentQuote,
 		nextQuote,
-		prevQuote,
-		canPrev,
 	};
 }
