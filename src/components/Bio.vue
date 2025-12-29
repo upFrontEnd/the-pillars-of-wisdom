@@ -34,8 +34,7 @@
 	<style scoped lang="scss">
 
 	.bio {
-		margin: 0;
-		font-size: 12px;
-		line-height: 1.4;
+		font-family: "Bodoni Moda", serif;
+		font-size: 1rem;
 	}
 	</style>

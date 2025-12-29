@@ -4,7 +4,7 @@
     "text": "Ce qui dépend de toi, c'est d'accepter ou non ce qui ne dépend pas de toi.",
     "author": {
       "name": "Marc Aurèle",
-      "bio": "Marc Aurèle, né le 26 avril 121 à Rome et mort le 17 mars 180 à Sirmium ou à Vindobona, est un empereur et philosophe romain de la dynastie des Antonins, consul en 140, 145 et 161, régnant de 161 à 180.",
+      "bio": "Ancien empereur de Rome",
       "photo": "/authors/aurele.jpg"
     }
   },
@@ -13,7 +13,7 @@
     "text": "Pour critiquer les gens il faut les connaître, et pour les connaître, il faut les aimer.",
     "author": {
       "name": "Coluche",
-      "bio": "Artiste, Comique (1944 - 1986).",
+      "bio": "Artiste",
       "photo": "/authors/coluche.jpg"
     }
   },
@@ -22,7 +22,7 @@
     "text": "La vie est un mystère qu'il faut vivre, et non un problème à résoudre.",
     "author": {
       "name": "Gandhi",
-      "bio": "Homme politique, Philosophe, Révolutionnaire (1869 - 1948)",
+      "bio": "Homme politique et Philosophe",
       "photo": "/authors/ghandi.jpg"
     }
   },
@@ -31,7 +31,7 @@
     "text": "La vie, c'est comme une bicyclette, il faut avancer pour ne pas perdre l'équilibre.",
     "author": {
       "name": "Albert Einstein",
-      "bio": "Mathématicien, Physicien, Scientifique (1879 - 1955)",
+      "bio": "Mathématicien, Physicien et Scientifique",
       "photo": "/authors/einstein.jpg"
     }
   },
@@ -40,7 +40,7 @@
     "text": "Si tu parles, tu meurs. Si tu te tais, tu meurs. Alors, dis et meurs.",
     "author": {
       "name": "Tahar Djaout",
-      "bio": "Ecrivain et journaliste algérien (1954 - 1993)",
+      "bio": "Ecrivain et journaliste",
       "photo": "/authors/djaout.jpg"
     }
   }

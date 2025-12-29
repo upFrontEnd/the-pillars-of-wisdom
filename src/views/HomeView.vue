@@ -23,7 +23,7 @@ import ThemeToggle from "../components/ThemeToggle.vue";
  *
  * Comme currentQuote est réactif, l’écran se met à jour tout seul quand on clique.
  */
-const { currentQuote, nextQuote } = useQuotes();
+const { currentQuote, nextQuote, prevQuote } = useQuotes();
 </script>
 
 <template>
@@ -44,7 +44,8 @@ const { currentQuote, nextQuote } = useQuotes();
 				La “carte” principale :
 				- on affiche la citation + infos auteur + actions
 			-->
-		<section v-else class="card">
+		<div v-else class="container">
+		<section class="card">
 			<header class="card__header">
 				<Photo
 					:src="currentQuote.author?.photo"
@@ -67,16 +68,18 @@ const { currentQuote, nextQuote } = useQuotes();
 				<Bio :text="currentQuote.author?.bio" />
 			</div>
 		</section>
-		<footer class="footer">
 			<!--
-					Bouton principal :
-					- clique => nextQuote()
-					- nextQuote change un index dans useQuotes()
-					- Vue re-render automatiquement avec la nouvelle citation
-				-->
-			<div class="card__actions">
-				<button class="btn" type="button" @click="nextQuote">Citation suivante</button>
+				Bouton principal :
+				- clique => nextQuote()
+				- nextQuote change un index dans useQuotes()
+				- Vue re-render automatiquement avec la nouvelle citation
+			-->
+			<div class="actions">
+				<button class="btn" type="button" @click="prevQuote">Citation préc.</button>
+				<button class="btn" type="button" @click="nextQuote">Citation suiv.</button>
 			</div>
+			</div>
+		<footer v-if="currentQuote" class="footer">
 
 			<!--
 					Partage :
@@ -102,12 +105,17 @@ const { currentQuote, nextQuote } = useQuotes();
 	min-height: 100svh;
 	display: grid;
 	grid-template-rows: auto 1fr auto;
+	gap: 10px;
 }
 
 .header,
 .footer {
 	margin: 0 auto;
 	width: 90%;
+}
+
+.footer {
+	text-align: center;
 }
 
 .header {
@@ -129,28 +137,25 @@ const { currentQuote, nextQuote } = useQuotes();
 .card {
 	align-self: center;
 	background: #fff;
-	border-top: 7px solid #f4af57;
+	border: 7px solid #f4af57;
 	border-radius: 5px;
 	box-shadow:
 		rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
 		rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 	display: grid;
-	grid-template-rows: auto minmax(220px, 220px) auto auto;
+	grid-template-rows: auto 1fr auto;
 	gap: 10px;
 	margin: 0 auto;
-	padding: 0 20px;
+	padding: 20px;
 	position: relative;
 	height: clamp(440px, 62svh, 540px);
 	width: 90%;
 
 	&__header {
-		background-color: dodgerblue;
-		display: flex;
-		align-items: center;
+
 	}
 
 	&__quote {
-		background-color: greenyellow;
 		display: grid;
 		place-items: center;
 		overflow: hidden;
@@ -158,22 +163,32 @@ const { currentQuote, nextQuote } = useQuotes();
 	}
 
 	&__meta {
-		background-color: gold;
 		text-align: center;
 	}
+
+}
+
+.actions {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		margin: 0 auto;
+		padding: 1rem 0 2rem;
+		width: 90%;
 }
 
 .footer {
-	background-color: aquamarine;
+	color: #fff;
 	padding: 1rem 0;
 }
 
 .btn {
-	border: 1px solid #ff0000;
+	border: 1px solid #f4af57;
 	background: rgba(255, 255, 255, 0.06);
-	color: #000;
 	border-radius: 10px;
-	padding: 10px 12px;
+	color: #f4af57;
 	cursor: pointer;
+	font-family: "Oswald", sans-serif;
+	padding: 10px 12px;
 }
 </style>

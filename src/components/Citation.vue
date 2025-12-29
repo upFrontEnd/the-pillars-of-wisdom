@@ -34,15 +34,6 @@ defineProps<{
 
 <style scoped lang="scss">
 .citation {
-	display: -webkit-box;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 5;
-	overflow: hidden;
-	overflow-wrap: anywhere;
-	word-break: break-word;
-
-
-
 	font-family: "Bodoni Moda", serif;
 	font-optical-sizing: auto;
 	font-size: 1.8rem;

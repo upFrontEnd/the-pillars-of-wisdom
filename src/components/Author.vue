@@ -29,7 +29,7 @@
 	<style scoped lang="scss">
 
 	.author {
-		margin: 0;
-		font-size: 14px;
+		font-family: "Bodoni Moda", serif;
+		font-size: 1.5rem;
 	}
 	</style>
