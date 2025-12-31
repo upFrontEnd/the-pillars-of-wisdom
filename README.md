@@ -1,3 +1,14 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/874a5d53-5138-4fc8-ba30-6dff16ad04df/deploy-status)](https://app.netlify.com/projects/lespilliersdelasagesse/deploys)
+
+# The Pillars of Wisdom
+The Pillars of Wisdom is an application that brings together inspiring quotes spoken by inspiring men and women.
+
+<a href="https://lespilliersdelasagesse.netlify.app/" target="_blank">
+    <img src="./public/img/screen.png" />
+<a>
+
+
+
 # app
 
 This template should help get you started developing with Vue 3 in Vite.
