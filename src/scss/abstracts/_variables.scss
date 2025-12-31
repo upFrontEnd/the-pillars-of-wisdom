@@ -1,20 +1,65 @@
-// Neutrals (light base)
-$color-bg: #fff;
+// Light
+$app-bg-1: #46567d;
+$app-bg-2: #DEF3F8;
+$color-title: #fff;
+$card-bg: #fff;
+$color-text: #333;
+$color-btn-accent: $app-bg-1;
+$color-btn-text-on-accent: #fff;
 
-// Neutrals (dark base)
-$color-bg-dark: #292c35;
+// Dark
+$app-bg-dark-1: #29323c;
+$app-bg-dark-2: #485563;
+
+$color-title-dark: #f4af57;
+
+$card-bg-dark: #292c35;
+$color-text-dark: #fff;
+
+$color-btn-accent-dark: #f4af57;
+$color-btn-text-on-accent-dark: #000;
 
 // Typography
-$font-family-base: system-ui, -apple-system, "BlinkMacSystemFont", "SF Pro Text", "Segoe UI", sans-serif;
+$font-family-base:
+	system-ui,
+	-apple-system,
+	"BlinkMacSystemFont",
+	"SF Pro Text",
+	"Segoe UI",
+	sans-serif;
 
 // ===========
 // THEME MAPS
 // ===========
 
 $theme-light: (
-	bg: $color-bg,
+	app-bg-1: $app-bg-1,
+	app-bg-2: $app-bg-2,
+
+	title: $color-title,
+
+	card-bg: $card-bg,
+	card-text: $color-text,
+
+	btn-border: $color-btn-accent,
+	btn-bg: transparent,
+	btn-text: $color-btn-accent,
+	btn-bg-hover: $color-btn-accent,
+	btn-text-hover: $color-btn-text-on-accent,
 );
 
 $theme-dark: (
-	bg: $color-bg-dark,
+	app-bg-1: $app-bg-dark-1,
+	app-bg-2: $app-bg-dark-2,
+
+	title: $color-title-dark,
+
+	card-bg: $card-bg-dark,
+	card-text: $color-text-dark,
+
+	btn-border: $color-btn-accent-dark,
+	btn-bg: transparent,
+	btn-text: $color-btn-accent-dark,
+	btn-bg-hover: $color-btn-accent-dark,
+	btn-text-hover: $color-btn-text-on-accent-dark,
 );

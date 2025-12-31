@@ -169,7 +169,7 @@
 	}
 
 	.link {
-		color: $color-bg;
+		color: #c7c7c7;
 		text-decoration: none;
 
 		&:hover {
