@@ -1,5 +1,5 @@
 [build]
-  command = "bun run build-only"
+  command = "node -v && bun -v && bun run build-only"
   publish = "dist"
 
 [[redirects]]
