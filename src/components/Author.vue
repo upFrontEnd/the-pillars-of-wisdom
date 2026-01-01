@@ -28,8 +28,12 @@
 
 	<style scoped lang="scss">
 
+	@use "../scss/abstracts" as *;
+
 	.author {
 		font-family: "Bodoni Moda", serif;
 		font-size: 1.5rem;
+		color: var(--author);
 	}
+
 	</style>

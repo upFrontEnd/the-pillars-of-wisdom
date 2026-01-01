@@ -1,14 +1,26 @@
 <script setup lang="ts">
 /**
- * HomeView = la page d’accueil (URL "/")
+ * HomeView.vue (route "/")
  *
- * À retenir :
- * - Le router dit : “quand on va sur /, on affiche HomeView”.
- * - HomeView ne “fabrique” pas les citations : elle les affiche.
- * - Toute la logique “quelle citation montrer ?” est dans useQuotes().
+ * Objectif de cette page :
+ * - Afficher une citation (texte + auteur + bio + photo)
+ * - Permettre de passer à la citation suivante
+ * - Proposer le partage
+ *
+ * Choix “Option B” pour le partage :
+ * - Si le navigateur supporte la Web Share API (`navigator.share`) :
+ *   => on affiche NativeShareButton (partage natif du téléphone)
+ * - Sinon :
+ *   => on affiche ShareButtons (fallback liens X / LinkedIn)
+ *
+ * Pourquoi le faire ici (dans HomeView) ?
+ * - On centralise la décision “quel UI afficher ?” au niveau de la page.
+ * - Ça évite d’afficher deux fois le partage (bug des 2 boutons).
  */
 
+import { computed } from "vue";
 import { useQuotes } from "../composables/useQuotes";
+
 import Photo from "../components/Photo.vue";
 import Citation from "../components/Citation.vue";
 import Author from "../components/Author.vue";
@@ -18,13 +30,26 @@ import ThemeToggle from "../components/ThemeToggle.vue";
 import NativeShareButton from "../components/NativeShareButton.vue";
 
 /**
- * useQuotes() nous donne :
- * - currentQuote : “la citation à afficher maintenant”
- * - nextQuote() : “passe à une autre citation”
- *
- * Comme currentQuote est réactif, l’écran se met à jour tout seul quand on clique.
+ * useQuotes() est la “source de vérité” pour les citations :
+ * - currentQuote : la citation affichée maintenant (réactive)
+ * - nextQuote()  : action pour passer à la suivante
  */
-const { currentQuote, nextQuote } = useQuotes();
+const { currentQuote, nextQuote, prevQuote, currentPosition, total } = useQuotes();
+
+/**
+ * canNativeShare
+ *
+ * Sert à détecter si le navigateur propose un partage natif.
+ * - Sur mobile (Chrome Android, Safari iOS), c’est souvent disponible.
+ * - Sur desktop, c’est plus variable.
+ *
+ * Le test est volontairement “safe” :
+ * - `navigator` peut être absent dans certains contextes (SSR, tests).
+ * - On vérifie que `navigator.share` est bien une fonction.
+ */
+const canNativeShare = computed(() => {
+	return typeof navigator !== "undefined" && typeof navigator.share === "function";
+});
 </script>
 
 <template>
@@ -36,14 +61,14 @@ const { currentQuote, nextQuote } = useQuotes();
 
 		<!--
 				Filet de sécurité :
-				- si ton JSON est vide (ou mal importé), currentQuote vaut null
-				- on affiche un message plutôt qu’une page cassée
+				- si ton JSON est vide ou mal importé, currentQuote peut être null
+				- on affiche un message au lieu de casser la page
 			-->
 		<p v-if="!currentQuote" class="muted">Aucune citation disponible.</p>
 
 		<!--
-				La “carte” principale :
-				- on affiche la citation + infos auteur + actions
+				Contenu principal :
+				- Affiché uniquement si currentQuote existe
 			-->
 		<div v-else class="container">
 			<section class="card">
@@ -54,14 +79,8 @@ const { currentQuote, nextQuote } = useQuotes();
 							currentQuote.author?.name ? `Photo de ${currentQuote.author.name}` : 'Photo auteur'
 						"
 					/>
-					<!--
-						Infos auteur :
-						- Author affiche “Anonyme” si pas de nom
-						- Bio n’affiche rien si la bio est absente
-					-->
 				</header>
 
-				<!-- Texte de la citation -->
 				<div class="card__quote">
 					<Citation :text="currentQuote.text" />
 				</div>
@@ -71,44 +90,81 @@ const { currentQuote, nextQuote } = useQuotes();
 					<Bio :text="currentQuote.author?.bio" />
 				</div>
 			</section>
-			<!--
-				Bouton principal :
-				- clique => nextQuote()
-				- nextQuote change un index dans useQuotes()
-				- Vue re-render automatiquement avec la nouvelle citation
-			-->
+
 			<div class="actions">
-				<button class="btn" type="button" @click="nextQuote">Citation suivante</button>
+				<button
+					class="btn btn--icon"
+					type="button"
+					@click="prevQuote"
+					aria-label="Afficher la citation précédente"
+					:title="'Citation précédente'"
+				>
+					<svg
+						class="icon"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						width="20"
+						height="20"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path
+							fill="currentColor"
+							d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1 1 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0Z"
+						/>
+					</svg>
+					<span class="sr-only">Précédente</span>
+				</button>
+
+				<p class="pager" aria-label="Pagination">{{ currentPosition }}/{{ total }}</p>
+
+				<button
+					class="btn btn--icon"
+					type="button"
+					@click="nextQuote"
+					aria-label="Afficher la citation suivante"
+					:title="'Citation suivante'"
+				>
+					<svg
+						class="icon"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						width="20"
+						height="20"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<path
+							fill="currentColor"
+							d="M8.5 18.5a1 1 0 0 1 0-1.4l5.1-5.1-5.1-5.1a1 1 0 1 1 1.4-1.4l5.8 5.8a1 1 0 0 1 0 1.4l-5.8 5.8a1 1 0 0 1-1.4 0Z"
+						/>
+					</svg>
+					<span class="sr-only">Suivante</span>
+				</button>
 			</div>
 		</div>
 
+		<!--
+				Footer :
+				- contient le module de partage
+				- Option B : NativeShareButton OU ShareButtons (jamais les deux)
+			-->
 		<footer v-if="currentQuote" class="footer">
-			<!--
-					Partage :
-					- si le navigateur supporte le partage natif => bouton “Partager”
-					- sinon => liens de partage
-					- on lui passe uniquement les infos utiles
-				-->
 			<NativeShareButton
+				v-if="canNativeShare"
 				:text="currentQuote.text"
 				:author="currentQuote.author?.name"
-				title="Good Mood Generator"
+				title="Les piliers de la sagesse"
 			/>
 
-			<ShareButtons :text="currentQuote.text" :author="currentQuote.author?.name" />
+			<ShareButtons v-else :text="currentQuote.text" :author="currentQuote.author?.name" />
 		</footer>
 	</main>
 </template>
 
 <style scoped lang="scss">
 @use "../scss/abstracts" as *;
-/**
-	 * Styles de HomeView (scoped = ça ne déborde pas ailleurs)
-	 *
-	 * Mobile-first :
-	 * - on définit d’abord le style pour mobile
-	 * - ensuite on améliore pour les écrans plus larges
-	 */
+
 .page {
 	background-image: linear-gradient(190deg, var(--app-bg-1) 0%, var(--app-bg-2) 100%);
 	min-height: 100svh;
@@ -126,6 +182,8 @@ const { currentQuote, nextQuote } = useQuotes();
 
 .footer {
 	text-align: center;
+	color: #fff;
+	padding: 1rem 0;
 }
 
 .header {
@@ -133,6 +191,7 @@ const { currentQuote, nextQuote } = useQuotes();
 	align-items: center;
 	justify-content: space-between;
 	padding: 1rem 0 0;
+
 	h1 {
 		color: var(--title);
 		font-family: "Oswald", sans-serif;
@@ -175,33 +234,41 @@ const { currentQuote, nextQuote } = useQuotes();
 
 .actions {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	gap: 10px;
 	margin: 0 auto;
 	padding: 1rem 0 2rem;
 	width: 90%;
-}
-
-.footer {
-	color: #fff;
-	padding: 1rem 0;
+	.pager {
+		border: 1px solid var(--btn-border);
+		background: var(--btn-bg);
+		border-radius: 10px;
+		font-family: "Oswald", sans-serif;
+		font-size: 0.9rem;
+		color: var(--btn-text);
+		align-self: center;
+		padding: 10px 12px;
+	}
 }
 
 .btn {
-  border: 1px solid var(--btn-border);
-  background: var(--btn-bg);
-  border-radius: 10px;
-  color: var(--btn-text);
-  cursor: pointer;
-  font-family: "Oswald", sans-serif;
-  padding: 10px 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+	border: 1px solid var(--btn-border);
+	background: var(--btn-bg);
+	border-radius: 10px;
+	color: var(--btn-text);
+	cursor: pointer;
+	font-family: "Oswald", sans-serif;
+	padding: 10px 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	transition:
+		background 0.3s ease,
+		color 0.3s ease,
+		border-color 0.3s ease;
 
-  &:hover {
-    background: var(--btn-bg-hover);
-    color: var(--btn-text-hover);
-  }
+	&:hover {
+		background: var(--btn-bg-hover);
+		color: var(--btn-text-hover);
+	}
 }
 </style>

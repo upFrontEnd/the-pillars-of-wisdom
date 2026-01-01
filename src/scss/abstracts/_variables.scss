@@ -1,9 +1,13 @@
 // Light
 $app-bg-1: #46567d;
-$app-bg-2: #DEF3F8;
+$app-bg-2: #def3f8;
+
 $color-title: #fff;
+$color-author: #000;
+
 $card-bg: #fff;
 $color-text: #333;
+
 $color-btn-accent: $app-bg-1;
 $color-btn-text-on-accent: #fff;
 
@@ -12,11 +16,12 @@ $app-bg-dark-1: #29323c;
 $app-bg-dark-2: #485563;
 
 $color-title-dark: #f4af57;
+$color-author-dark: $color-title-dark;
 
 $card-bg-dark: #292c35;
 $color-text-dark: #fff;
 
-$color-btn-accent-dark: #f4af57;
+$color-btn-accent-dark: $color-title-dark;
 $color-btn-text-on-accent-dark: #000;
 
 // Typography
@@ -37,6 +42,7 @@ $theme-light: (
 	app-bg-2: $app-bg-2,
 
 	title: $color-title,
+	author: $color-author,
 
 	card-bg: $card-bg,
 	card-text: $color-text,
@@ -53,6 +59,7 @@ $theme-dark: (
 	app-bg-2: $app-bg-dark-2,
 
 	title: $color-title-dark,
+	author: $color-author-dark,
 
 	card-bg: $card-bg-dark,
 	card-text: $color-text-dark,

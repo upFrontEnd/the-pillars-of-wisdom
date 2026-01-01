@@ -59,7 +59,7 @@
 		if (!canShare.value) return;
 
 		await navigator.share({
-			title: props.title ?? "Good Mood Generator",
+			title: props.title ?? "Les piliers de la sagesse",
 			text: shareText.value,
 			url: shareUrl.value,
 		});

@@ -1,67 +1,78 @@
 import { computed, ref } from "vue";
 import type { QuoteItem } from "../types/quote";
+
+// Import statique du JSON (Vite l’intègre au build)
 import rawQuotes from "../data/quotes.json";
 
-const quotes = rawQuotes as QuoteItem[];
-
 /**
- * Retourne un index aléatoire (différent de l’index courant si possible).
+ * Dataset de citations.
+ * - Le JSON n’est pas typé “nativement”, donc on cast.
+ * - On part du principe que quotes.json respecte QuoteItem.
  */
-function pickNewIndex(current: number, length: number): number {
-	if (length <= 1) return 0;
-
-	let next = current;
-	while (next === current) {
-		next = Math.floor(Math.random() * length);
-	}
-	return next;
-}
+const quotes = rawQuotes as QuoteItem[];
 
 export function useQuotes() {
 	/**
-	 * Index de la citation affichée actuellement.
+	 * Index de la citation affichée (0 = première citation du tableau).
+	 * - ref => réactif : quand on modifie currentIndex, l’UI se met à jour.
 	 */
 	const currentIndex = ref(0);
 
 	/**
-	 * Historique des index déjà affichés.
-	 *
-	 * Idée :
-	 * - Quand on va “suivant”, on mémorise l’index courant dans history.
-	 * - Quand on va “précédent”, on récupère le dernier index de history.
-	 *
-	 * C’est exactement comme le bouton “retour” d’un navigateur.
+	 * Nombre total de citations (utile pour la pagination "3/10").
 	 */
-	const history = ref<number[]>([]);
+	const total = computed(() => quotes.length);
 
 	/**
-	 * La citation actuellement affichée.
-	 * On renvoie null si le JSON est vide (sécurité UI).
+	 * Position “humaine” (1-based) :
+	 * - index 0 => position 1
+	 * - index 2 => position 3
+	 */
+	const currentPosition = computed(() => {
+		if (!total.value) return 0;
+		return currentIndex.value + 1;
+	});
+
+	/**
+	 * Citation courante (dérivée de l’index).
+	 * - On renvoie null si le JSON est vide pour éviter de casser l’app.
 	 */
 	const currentQuote = computed<QuoteItem | null>(() => {
-		if (!quotes.length) return null;
+		if (!total.value) return null;
 		return quotes[currentIndex.value] ?? null;
 	});
 
-
 	/**
-	 * Action : afficher une nouvelle citation (aléatoire).
-	 *
-	 * Important :
-	 * - on sauvegarde l’index actuel dans l’historique
-	 * - puis on choisit un nouvel index
+	 * nextQuote()
+	 * - Avance d’une citation.
+	 * - Comportement : boucle (la dernière -> revient à la première).
 	 */
 	function nextQuote() {
-		if (!quotes.length) return;
-
-		history.value.push(currentIndex.value);
-		currentIndex.value = pickNewIndex(currentIndex.value, quotes.length);
+		if (!total.value) return;
+		currentIndex.value = (currentIndex.value + 1) % total.value;
 	}
 
+	/**
+	 * prevQuote()
+	 * - Recule d’une citation.
+	 * - Comportement : boucle (la première -> revient à la dernière).
+	 */
+	function prevQuote() {
+		if (!total.value) return;
+		currentIndex.value = (currentIndex.value - 1 + total.value) % total.value;
+	}
+
+	/**
+	 * API exposée à la page (HomeView) :
+	 * - currentQuote : ce qu’on affiche
+	 * - nextQuote/prevQuote : navigation
+	 * - currentPosition/total : pagination "3/10"
+	 */
 	return {
-		quotes,
-		currentIndex,
 		currentQuote,
 		nextQuote,
+		prevQuote,
+		currentPosition,
+		total,
 	};
 }
