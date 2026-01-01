@@ -49,14 +49,15 @@
 	 * - si le texte contient `<b>Salut</b>`, on le transforme en `&lt;b&gt;Salut&lt;/b&gt;`
 	 *   => ça s’affichera en texte, pas en HTML.
 	 */
-	function escapeHtml(input: string): string {
-		return input
-			.replaceAll("&", "&amp;")
-			.replaceAll("<", "&lt;")
-			.replaceAll(">", "&gt;")
-			.replaceAll('"', "&quot;")
-			.replaceAll("'", "&#039;");
-	}
+	 function escapeHtml(input: string): string {
+	return input
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
+}
+
 
 	/**
 	 * citationHtml
