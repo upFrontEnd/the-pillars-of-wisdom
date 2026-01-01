@@ -185,6 +185,10 @@
 			opacity: 0.9;
 		}
 
+		&__sun {
+			color: #f4af57;
+		}
+
 		&__thumb {
 			position: absolute;
 			left: 4px;

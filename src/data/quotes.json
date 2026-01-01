@@ -46,7 +46,7 @@
   },
 	{
     "id": "q-006",
-    "text": "J’entends et j’oublie.<br/>Je vois et je me souviens.<br/>Je fais et je comprends",
+    "text": "J’entends et j’oublie.<br/>Je vois et je me souviens.<br/>Je fais et je comprends.",
     "author": {
       "name": "Confucius",
       "bio": "Philosophe",
@@ -64,7 +64,7 @@
   },
 	{
     "id": "q-008",
-    "text": "Si vous voulez quelque chose que vous n’avez jamais eu, vous devez faire quelque chose que vous n’avez jamais fait",
+    "text": "Si vous voulez quelque chose que vous n’avez jamais eu, vous devez faire quelque chose que vous n’avez jamais fait.",
     "author": {
       "name": "Thomas Jefferson",
       "bio": "3é président des États-Unis",
@@ -73,15 +73,6 @@
   },
 	{
     "id": "q-009",
-    "text": "Si vous voulez quelque chose que vous n’avez jamais eu, vous devez faire quelque chose que vous n’avez jamais fait",
-    "author": {
-      "name": "Thomas Jefferson",
-      "bio": "3é président des États-Unis",
-      "photo": "/authors/jefferson.jpg"
-    }
-  },
-	{
-    "id": "q-010",
     "text": "Le succès n'est pas final, l'échec n'est pas fatal, c'est le courage de continuer qui compte.",
     "author": {
       "name": "Winston Churchill",
@@ -90,8 +81,8 @@
     }
   },
 	{
-    "id": "q-011",
-    "text": "L'ignorant affirme, le savant doute, le sage réfléchit. ",
+    "id": "q-010",
+    "text": "L'ignorant affirme, le savant doute, le sage réfléchit.",
     "author": {
       "name": "Aristote",
       "bio": "Philosophe",
@@ -99,8 +90,17 @@
     }
   },
 	{
+    "id": "q-011",
+    "text": "Allez plus vite que la musique est le meilleur moyen de faire une fausse note.",
+    "author": {
+      "name": "Adel Kamel",
+      "bio": "Développeur Front-End",
+      "photo": "/authors/adel.jpg"
+    }
+  },
+	{
     "id": "q-012",
-    "text": "Allez plus vite que la musique est le meilleur moyen de faire une fausse note",
+    "text": "Dans le concert du négatif, quelques notes positives feront, au final, la plus belle symphonie.",
     "author": {
       "name": "Adel Kamel",
       "bio": "Développeur Front-End",

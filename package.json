@@ -1,42 +1,75 @@
 {
-	"name": "good-mood-generator",
-	"version": "0.0.0",
-	"private": true,
-	"type": "module",
-	"engines": {
-		"node": "^20.19.0 || >=22.12.0"
-	},
-	"scripts": {
-		"dev": "vite",
-		"build": "run-p type-check \"build-only {@}\" --",
-		"build-only": "vite build",
-		"preview": "vite preview --port 3000 --host 0.0.0.0",
-		"type-check": "vue-tsc --build",
-		"lint": "eslint . --fix --cache",
-		"format": "prettier --write --experimental-cli src/",
-		"screenshot": "node scripts/screenshot.js"
-	},
-	"dependencies": {
-		"vue": "^3.5.25",
-		"vue-router": "^4.6.3"
-	},
-	"devDependencies": {
-		"playwright": "^1.57.0",
-		"@tsconfig/node24": "^24.0.3",
-		"@types/node": "^24.10.1",
-		"@vitejs/plugin-vue": "^6.0.2",
-		"@vue/eslint-config-prettier": "^10.2.0",
-		"@vue/eslint-config-typescript": "^14.6.0",
-		"@vue/tsconfig": "^0.8.1",
-		"eslint": "^9.39.1",
-		"eslint-plugin-vue": "~10.5.1",
-		"jiti": "^2.6.1",
-		"npm-run-all2": "^8.0.4",
-		"prettier": "3.6.2",
-		"sass": "^1.97.1",
-		"typescript": "~5.9.0",
-		"vite": "^7.2.4",
-		"vite-plugin-vue-devtools": "^8.0.5",
-		"vue-tsc": "^3.1.5"
-	}
+  "name": "good-mood-generator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+
+  "_depsNotes": {
+    "dependencies": {
+      "vue": "Framework UI (Vue 3) : composition API, réactivité, composants.",
+      "vue-router": "Routage officiel Vue : routes, navigation, pages (SPA)."
+    },
+    "devDependencies": {
+      "@tsconfig/node24": "Preset tsconfig pour Node.js 24 : options TS recommandées côté tooling/scripts.",
+      "@types/node": "Types TypeScript pour l'API Node (fs, path, process...) utilisés dans scripts/outillage.",
+      "@vitejs/plugin-vue": "Plugin Vite pour compiler les SFC Vue (.vue) : template -> JS, HMR.",
+      "@vue/eslint-config-prettier": "Configuration ESLint Vue compatible Prettier : désactive les règles de style en conflit.",
+      "@vue/eslint-config-typescript": "Configuration ESLint Vue + TypeScript (règles recommandées pour TS dans un projet Vue).",
+      "@vue/tsconfig": "tsconfig de base pour projets Vue (DOM, bundler, paths), utilisé comme 'extends'.",
+      "eslint": "Linter JS/TS : analyse statique, détection d'erreurs, règles de code.",
+      "eslint-plugin-vue": "Règles ESLint spécifiques aux fichiers .vue (template/script/style).",
+      "jiti": "Chargeur runtime JS/TS (souvent utilisé par des outils de config) : exécute TS/ESM sans build préalable.",
+      "npm-run-all2": "Orchestrateur de scripts (run-p/run-s) : exécute plusieurs scripts en parallèle/série (utilisé dans build).",
+      "playwright": "Automatisation navigateur : tests E2E et/ou scripts de capture (utile pour screenshot.js).",
+      "prettier": "Formateur de code : standardise la mise en forme (JS/TS/Vue/JSON/SCSS...).",
+      "sass": "Compilateur Sass/SCSS : support du <style lang=\"scss\"> et de l'architecture SCSS.",
+      "sharp": "Traitement d'images (lib native) : conversion JPEG -> WebP, redimensionnement, optimisation (script de conversion).",
+      "typescript": "Compilateur TypeScript : types, transpilation, vérification statique.",
+      "vite": "Bundler/dev server : HMR, build de prod, import ESM, pipeline d'assets.",
+      "vite-imagetools": "Transformations d'images via query params au build : génération WebP, resize, etc. (si vous l'utilisez).",
+      "vite-plugin-vue-devtools": "Intégration Devtools Vue dans Vite en dev : inspection composants/état (ergonomie dev).",
+      "vue-tsc": "Type-checker Vue + TS : vérifie types dans SFC (.vue) via vue-tsc --build."
+    }
+  },
+
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "build-only": "vite build",
+    "preview": "vite preview --port 3000 --host 0.0.0.0",
+    "type-check": "vue-tsc --build",
+    "lint": "eslint . --fix --cache",
+    "format": "prettier --write --experimental-cli src/",
+    "screenshot": "node scripts/screenshot.js"
+  },
+
+  "dependencies": {
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3"
+  },
+
+  "devDependencies": {
+    "@tsconfig/node24": "^24.0.3",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.2",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/tsconfig": "^0.8.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-vue": "~10.5.1",
+    "jiti": "^2.6.1",
+    "npm-run-all2": "^8.0.4",
+    "playwright": "^1.57.0",
+    "prettier": "3.6.2",
+    "sass": "^1.97.1",
+    "sharp": "^0.34.5",
+    "typescript": "~5.9.0",
+    "vite": "^7.2.4",
+    "vite-imagetools": "^9.0.2",
+    "vite-plugin-vue-devtools": "^8.0.5",
+    "vue-tsc": "^3.1.5"
+  }
 }

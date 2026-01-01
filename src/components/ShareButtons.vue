@@ -199,16 +199,17 @@ async function nativeShare() {
 	background: rgba(255, 255, 255, 0.06);
 	border-radius: 10px;
 	color: #f4af57;
+	font-family: "Oswald", sans-serif;
 	cursor: pointer;
 	padding: 10px 12px;
+	text-transform: uppercase
 }
 
 .link {
+	@extend .btn;
+	border: 1px solid #fff;
 	color: #c7c7c7;
 	text-decoration: none;
-
-	&:hover {
-		color: #f4af57;
-	}
+	width: clamp(180px, 20vw, 200px);
 }
 </style>
