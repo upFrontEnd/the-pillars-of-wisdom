@@ -1,28 +1,14 @@
 // Light
-$app-bg-1: #46567d;
-$app-bg-2: #def3f8;
+$sky-light-1: #46567d;
+$sky-light-2: #def3f8;
+$milk: #fff;
 
-$color-title: #fff;
-$color-author: #000;
-
-$card-bg: #fff;
-$color-text: #333;
-
-$color-btn-accent: $app-bg-1;
-$color-btn-text-on-accent: #fff;
 
 // Dark
-$app-bg-dark-1: #29323c;
-$app-bg-dark-2: #485563;
-
-$color-title-dark: #f4af57;
-$color-author-dark: $color-title-dark;
-
-$card-bg-dark: #292c35;
-$color-text-dark: #fff;
-
-$color-btn-accent-dark: $color-title-dark;
-$color-btn-text-on-accent-dark: #000;
+$sky-dark-1: #29323c;
+$sky-dark-2: #485563;
+$dark: #333;
+$toffee: #f4af57;
 
 // Typography
 $font-family-base:
@@ -38,35 +24,33 @@ $font-family-base:
 // ===========
 
 $theme-light: (
-	app-bg-1: $app-bg-1,
-	app-bg-2: $app-bg-2,
-
-	title: $color-title,
-	author: $color-author,
-
-	card-bg: $card-bg,
-	card-text: $color-text,
-
-	btn-border: $color-btn-accent,
-	btn-bg: transparent,
-	btn-text: $color-btn-accent,
-	btn-bg-hover: $color-btn-accent,
-	btn-text-hover: $color-btn-text-on-accent,
+	app-bg-1: $sky-light-1,
+	app-bg-2: $sky-light-2,
+	title: $milk,
+	author: $sky-light-1,
+	quotes: $sky-light-1,
+	card-bg: $milk,
+	card-border: $sky-light-1,
+	card-text: $dark,
+	btn-border: $sky-light-1,
+	btn-bg: $sky-light-1,
+	btn-text: $milk,
+	btn-bg-hover: $dark,
+	btn-text-hover: $milk,
 );
 
 $theme-dark: (
-	app-bg-1: $app-bg-dark-1,
-	app-bg-2: $app-bg-dark-2,
-
-	title: $color-title-dark,
-	author: $color-author-dark,
-
-	card-bg: $card-bg-dark,
-	card-text: $color-text-dark,
-
-	btn-border: $color-btn-accent-dark,
+	app-bg-1: $sky-dark-1,
+	app-bg-2: $sky-dark-2,
+	title: $toffee,
+	author: $toffee,
+	quotes: $toffee,
+	card-bg: $dark,
+	card-border: $toffee,
+	card-text: $milk,
+	btn-border: $toffee,
 	btn-bg: transparent,
-	btn-text: $color-btn-accent-dark,
-	btn-bg-hover: $color-btn-accent-dark,
-	btn-text-hover: $color-btn-text-on-accent-dark,
+	btn-text: $toffee,
+	btn-bg-hover: $toffee,
+	btn-text-hover: $dark,
 );

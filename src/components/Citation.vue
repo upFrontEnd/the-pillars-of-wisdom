@@ -107,7 +107,7 @@
 
 		&::after,
 		&::before {
-			color: #f4af57;
+			color: var(--quotes);
 			font-size: 5rem;
 			line-height: 1;
 			position: absolute;

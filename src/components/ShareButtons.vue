@@ -207,9 +207,15 @@ async function nativeShare() {
 
 .link {
 	@extend .btn;
-	border: 1px solid #fff;
-	color: #c7c7c7;
+	border: 1px solid var(--btn-border);
+	color: var((--btn-border));
+	font-size: .8rem;
 	text-decoration: none;
-	width: clamp(180px, 20vw, 200px);
+	width: 170px;
+	transition: all 0.3s ease;
+	&:hover {
+		background: var(--btn-border);
+		color: var(--btn-text-hover);
+	}
 }
 </style>

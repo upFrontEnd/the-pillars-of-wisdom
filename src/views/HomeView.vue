@@ -205,7 +205,7 @@ const canNativeShare = computed(() => {
 
 .card {
 	background: var(--card-bg);
-	border: 7px solid #f4af57;
+	border: 7px solid var(--card-border);
 	border-radius: 5px;
 	box-shadow:
 		rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
@@ -267,7 +267,7 @@ const canNativeShare = computed(() => {
 		border-color 0.3s ease;
 
 	&:hover {
-		background: var(--btn-bg-hover);
+		background: transparent;
 		color: var(--btn-text-hover);
 	}
 }
