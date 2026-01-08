@@ -267,8 +267,9 @@ const canNativeShare = computed(() => {
 		border-color 0.3s ease;
 
 	&:hover {
-		background: transparent;
+		background: var(--btn-bg-hover);
 		color: var(--btn-text-hover);
+		border-color: var(--btn-border-hover, var(--btn-border));
 	}
 }
 </style>
