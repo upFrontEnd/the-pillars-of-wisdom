@@ -1,78 +1,80 @@
-import { computed, ref } from "vue";
-import type { QuoteItem } from "../types/quote";
+import { computed, ref, watch } from "vue"
+import type { QuoteItem } from "../types/quote"
+import rawQuotes from "../data/quotes.json"
 
-// Import statique du JSON (Vite l’intègre au build)
-import rawQuotes from "../data/quotes.json";
+const quotes = rawQuotes as QuoteItem[]
 
 /**
- * Dataset de citations.
- * - Le JSON n’est pas typé “nativement”, donc on cast.
- * - On part du principe que quotes.json respecte QuoteItem.
+ * Cache local pour éviter de relancer un préchargement sur une URL déjà traitée.
+ * Scope module => partagé entre toutes les utilisations du composable.
  */
-const quotes = rawQuotes as QuoteItem[];
+const preloaded = new Set<string>()
+
+/**
+ * Précharge une image (sans l’afficher).
+ * - new Image() crée un objet Image côté navigateur
+ * - src déclenche le téléchargement et remplit le cache
+ */
+function preloadImage(src?: string) {
+  if (!src) return
+  if (preloaded.has(src)) return
+
+  const img = new Image()
+  img.src = src
+  preloaded.add(src)
+}
 
 export function useQuotes() {
-	/**
-	 * Index de la citation affichée (0 = première citation du tableau).
-	 * - ref => réactif : quand on modifie currentIndex, l’UI se met à jour.
-	 */
-	const currentIndex = ref(0);
+  const currentIndex = ref(0)
 
-	/**
-	 * Nombre total de citations (utile pour la pagination "3/10").
-	 */
-	const total = computed(() => quotes.length);
+  const total = computed(() => quotes.length)
 
-	/**
-	 * Position “humaine” (1-based) :
-	 * - index 0 => position 1
-	 * - index 2 => position 3
-	 */
-	const currentPosition = computed(() => {
-		if (!total.value) return 0;
-		return currentIndex.value + 1;
-	});
+  const currentPosition = computed(() => {
+    if (!total.value) return 0
+    return currentIndex.value + 1
+  })
 
-	/**
-	 * Citation courante (dérivée de l’index).
-	 * - On renvoie null si le JSON est vide pour éviter de casser l’app.
-	 */
-	const currentQuote = computed<QuoteItem | null>(() => {
-		if (!total.value) return null;
-		return quotes[currentIndex.value] ?? null;
-	});
+  const currentQuote = computed<QuoteItem | null>(() => {
+    if (!total.value) return null
+    return quotes[currentIndex.value] ?? null
+  })
 
-	/**
-	 * nextQuote()
-	 * - Avance d’une citation.
-	 * - Comportement : boucle (la dernière -> revient à la première).
-	 */
-	function nextQuote() {
-		if (!total.value) return;
-		currentIndex.value = (currentIndex.value + 1) % total.value;
-	}
+  function nextQuote() {
+    if (!total.value) return
+    currentIndex.value = (currentIndex.value + 1) % total.value
+  }
 
-	/**
-	 * prevQuote()
-	 * - Recule d’une citation.
-	 * - Comportement : boucle (la première -> revient à la dernière).
-	 */
-	function prevQuote() {
-		if (!total.value) return;
-		currentIndex.value = (currentIndex.value - 1 + total.value) % total.value;
-	}
+  function prevQuote() {
+    if (!total.value) return
+    currentIndex.value = (currentIndex.value - 1 + total.value) % total.value
+  }
 
-	/**
-	 * API exposée à la page (HomeView) :
-	 * - currentQuote : ce qu’on affiche
-	 * - nextQuote/prevQuote : navigation
-	 * - currentPosition/total : pagination "3/10"
-	 */
-	return {
-		currentQuote,
-		nextQuote,
-		prevQuote,
-		currentPosition,
-		total,
-	};
+  /**
+   * Préchargement automatique :
+   * - quand l’index change, on précharge l’image de la citation courante
+   *   et celle de la prochaine (pour que le clic "suivant" soit instantané).
+   * - immediate: true => précharge aussi au premier affichage.
+   */
+  watch(
+    currentIndex,
+    (idx) => {
+      if (!total.value) return
+
+      const curr = quotes[idx]
+      const next = quotes[(idx + 1) % total.value]
+
+      // ⚠️ Remplace authorImage par le champ réel de ton QuoteItem
+      preloadImage((curr as any).authorImage)
+      preloadImage((next as any).authorImage)
+    },
+    { immediate: true }
+  )
+
+  return {
+    currentQuote,
+    nextQuote,
+    prevQuote,
+    currentPosition,
+    total,
+  }
 }
