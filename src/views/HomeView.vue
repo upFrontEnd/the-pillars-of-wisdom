@@ -206,7 +206,7 @@ const canNativeShare = computed(() => {
 .card {
 	background: var(--card-bg);
 	border: 7px solid var(--card-border);
-	border-radius: 5px;
+	border-radius: $radius;
 	box-shadow:
 		rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
 		rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
@@ -242,7 +242,7 @@ const canNativeShare = computed(() => {
 	.pager {
 		border: 1px solid var(--btn-border);
 		background: var(--btn-bg);
-		border-radius: 10px;
+		border-radius: $radius;
 		font-family: "Oswald", sans-serif;
 		font-size: 0.9rem;
 		color: var(--btn-text);
@@ -254,7 +254,7 @@ const canNativeShare = computed(() => {
 .btn {
 	border: 1px solid var(--btn-border);
 	background: var(--btn-bg);
-	border-radius: 10px;
+	border-radius: $radius;
 	color: var(--btn-text);
 	cursor: pointer;
 	font-family: "Oswald", sans-serif;

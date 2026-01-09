@@ -197,7 +197,7 @@ async function nativeShare() {
 .btn {
 	border: 1px solid #f4af57;
 	background: rgba(255, 255, 255, 0.06);
-	border-radius: 10px;
+	border-radius: $radius;
 	color: #f4af57;
 	font-family: "Oswald", sans-serif;
 	cursor: pointer;
